@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Getting started | Kotlin APIfor SMT solvers</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Getting started" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/" />
+<meta property="og:url" content="http://localhost:4000/" />
+<meta property="og:site_name" content="Kotlin APIfor SMT solvers" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Getting started" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","headline":"Getting started","name":"Kotlin APIfor SMT solvers","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/img/ksmt-logo.jpg"}},"url":"http://localhost:4000/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=b9a11fae826d74d0a5623369f08e20d938a3d82e">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+</head>
+<body>
+<div class="wrapper">
+
+    <header>
+
+        
+        <img src="/assets/img/ksmt-logo.jpg" alt="Logo">
+        
+
+        <h1><a href="http://localhost:4000/">Kotlin API<br>for SMT solvers</a></h1>
+
+        <!--<h2>{"title"=>"Home", "url"=>"index.html"}{"title"=>"Getting started", "url"=>"getting-started.html"}{"title"=>"Advanced usage", "url"=>"advanced-usage.html"}{"title"=>"Custom expressions", "url"=>"custom-expressions.html"}</h2>-->
+<ul>
+    
+    <li><a href="index.html">Home</a></li>
+    
+    <li><a href="getting-started.html">Getting started</a></li>
+    
+    <li><a href="advanced-usage.html">Advanced usage</a></li>
+    
+    <li><a href="custom-expressions.html">Custom expressions</a></li>
+    
+</ul>
+
+<!--<ul>-->
+<!--    -->
+<!--    <li><a href="index.html">Home</a>-->
+<!--        -->
+<!--    </li>-->
+<!--    -->
+<!--    <li><a href="getting-started.html">Getting started</a>-->
+<!--        -->
+<!--    </li>-->
+<!--    -->
+<!--    <li><a href="advanced-usage.html">Advanced usage</a>-->
+<!--        -->
+<!--    </li>-->
+<!--    -->
+<!--    <li><a href="custom-expressions.html">Custom expressions</a>-->
+<!--        -->
+<!--    </li>-->
+<!--    -->
+<!--</ul>-->
+
+
+        <p></p>
+
+<!--        -->
+<!--        <p class="view"><a href="https://github.com/olganaumenko/pseudoksmt">View the Project on GitHub <small>olganaumenko/pseudoksmt</small></a></p>-->
+<!--        -->
+
+
+
+<!--        -->
+
+<!--        -->
+    </header>
+    <section>
+
+<!--        <p><a href="https://github.com/UnitTestBot/ksmt/actions/workflows/build-and-run-tests.yml"><img src="https://github.com/UnitTestBot/ksmt/actions/workflows/build-and-run-tests.yml/badge.svg" alt="KSMT: build" /></a>
+<a href="https://central.sonatype.com/artifact/io.ksmt/ksmt-core/0.5.3"><img src="https://img.shields.io/maven-central/v/io.ksmt/ksmt-core" alt="Maven Central" /></a>
+<a href="https://javadoc.io/doc/io.ksmt/ksmt-core"><img src="https://javadoc.io/badge2/io.ksmt/ksmt-core/javadoc.svg" alt="javadoc" /></a></p>
+
+<p>Get the most out of SMT solving with the unified Kotlin/Java API:</p>
+<ul>
+  <li>Supporting more <a href="#supported-solvers-and-theories">solvers and theories</a> — for all popular operating systems</li>
+  <li><a href="#solver-agnostic-formula-representation">Solver-agnostic formula representation</a> and easy-to-use <a href="#kotlin-based-dsl-for-smt-formulas">DSL</a></li>
+  <li>Utilities to <a href="#utilities-to-simplify-and-transform-expressions">simplify and transform</a> your expressions</li>
+  <li>Switching between solvers and support for <a href="#using-multiple-solvers-portfolio-mode">portfolio mode</a></li>
+  <li>Running solvers in a <a href="#running-solvers-in-separate-processes">separate process</a> to reduce timeout-related crashes</li>
+  <li>Streamlined <a href="#ksmt-distribution">solver delivery</a> with no need for building a solver or implementing JVM bindings</li>
+</ul>
+
+<h2 id="get-started">Get started</h2>
+
+<p>To start using KSMT, install it via <a href="https://gradle.org/">Gradle</a>:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// core </span>
+<span class="nf">implementation</span><span class="p">(</span><span class="s">"io.ksmt:ksmt-core:0.5.3"</span><span class="p">)</span>
+<span class="c1">// z3 solver</span>
+<span class="nf">implementation</span><span class="p">(</span><span class="s">"io.ksmt:ksmt-z3:0.5.3"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Find basic instructions in the <a href="https://ksmt.io/getting-started">Getting started</a> guide and try it out with the 
+<a href="https://github.com/UnitTestBot/ksmt/tree/main/examples/src/main/kotlin">Kotlin</a> or <a href="https://github.com/UnitTestBot/ksmt/tree/main/examples/src/main/java">Java</a> examples.</p>
+
+<p>To go beyond the basic scenarios, proceed to the <a href="https://ksmt.io/advanced-usage">Advanced usage</a> guide and try the <a href="https://github.com/UnitTestBot/ksmt/tree/main/examples/src/main/kotlin/AdvancedExamples.kt">advanced 
+example</a>.</p>
+
+<p>To get guided experience in KSMT, step through the detailed scenario for creating 
+<a href="https://ksmt.io/custom-expressions">custom expressions</a>.</p>
+
+<h2 id="find-more-on-ksmt-features">Find more on KSMT features</h2>
+
+<p>Check the <a href="https://github.com/UnitTestBot/ksmt/blob/main/Requirements.md">Roadmap</a> to know more about current
+feature support and plans for the nearest future.</p>
+
+<h3 id="supported-solvers-and-theories">Supported solvers and theories</h3>
+
+<p>KSMT provides support for various solvers:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>SMT solver</th>
+      <th style="text-align: center">Linux-x64</th>
+      <th style="text-align: center">Windows-x64</th>
+      <th style="text-align: center">macOS-aarch64</th>
+      <th style="text-align: center">macOS-x64</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://github.com/Z3Prover/z3">Z3</a></td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/bitwuzla/bitwuzla">Bitwuzla</a></td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/SRI-CSL/yices2">Yices2</a></td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/cvc5/cvc5">cvc5</a></td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center"> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>You can also use SMT solvers across multiple theories:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Theory</th>
+      <th style="text-align: center">Z3</th>
+      <th style="text-align: center">Bitwuzla</th>
+      <th style="text-align: center">Yices2</th>
+      <th style="text-align: center">cvc5</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Bitvectors</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Arrays</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>IEEE Floats</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Uninterpreted Functions</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+    <tr>
+      <td>Arithmetic</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+      <td style="text-align: center">:heavy_check_mark:</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="solver-agnostic-formula-representation">Solver-agnostic formula representation</h3>
+
+<p>Various scenarios are available for using SMT solvers: you can use a single solver to determine whether a formula is
+satisfiable, or you can apply several solvers to the same expression successively. In the latter case, you need a <em>solver-agnostic formula representation</em>.</p>
+
+<p>We implemented it in KSMT, so you can</p>
+<ul>
+  <li>transform expressions from the solver native representation to KSMT representation and vice versa,</li>
+  <li>use <em>formula introspection</em>,</li>
+  <li>manipulate expressions without involving a solver,</li>
+  <li>use expressions even if the solver is freed.</li>
+</ul>
+
+<p>Expression interning (hash consing) affords faster expression comparison: we do not need to compare the expression
+trees. Expressions are deduplicated, so we avoid redundant memory allocation.</p>
+
+<h3 id="kotlin-based-dsl-for-smt-formulas">Kotlin-based DSL for SMT formulas</h3>
+
+<p>KSMT provides you with a unified DSL for SMT expressions:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">array</span> <span class="k">by</span> <span class="nf">mkArraySort</span><span class="p">(</span><span class="n">intSort</span><span class="p">,</span> <span class="n">intSort</span><span class="p">)</span>
+<span class="kd">val</span> <span class="py">index</span> <span class="k">by</span> <span class="n">intSort</span>
+<span class="kd">val</span> <span class="py">value</span> <span class="k">by</span> <span class="n">intSort</span>
+
+<span class="kd">val</span> <span class="py">expr</span> <span class="p">=</span> <span class="p">(</span><span class="n">array</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="n">index</span> <span class="p">-</span> <span class="mi">1</span><span class="p">.</span><span class="n">expr</span><span class="p">)</span> <span class="n">lt</span> <span class="n">value</span><span class="p">)</span> <span class="nf">and</span>
+        <span class="p">(</span><span class="n">array</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="n">index</span> <span class="p">+</span> <span class="mi">1</span><span class="p">.</span><span class="n">expr</span><span class="p">)</span> <span class="n">gt</span> <span class="n">value</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="utilities-to-simplify-and-transform-expressions">Utilities to simplify and transform expressions</h3>
+
+<p>KSMT provides a simplification engine applicable to all supported expressions for all supported theories:</p>
+
+<ul>
+  <li>reduce expression size and complexity</li>
+  <li>evaluate expressions (including those with free variables) — reduce your expression to a constant</li>
+  <li>perform formula transformations</li>
+  <li>substitute expressions</li>
+</ul>
+
+<p>KSMT simplification engine implements more than 200 rules.
+By default, it attempts to apply simplifications when you create the expressions, but you can turn this
+feature off, if necessary. You can also simplify an arbitrary expression manually.</p>
+
+<h3 id="using-multiple-solvers-portfolio-mode">Using multiple solvers (portfolio mode)</h3>
+
+<p>SMT solvers may differ in performance across different formulas:
+see the <a href="https://smt-comp.github.io/2022/">International Satisfiability Modulo Theories Competition</a>.</p>
+
+<p>With KSMT portfolio solving, you can run multiple solvers in parallel on the same formula — until you get the first
+(the fastest) result.</p>
+
+<p>For detailed instructions on running multiple solvers, see <a href="https://ksmt.io/advanced-usage">Advanced usage</a>.</p>
+
+<h3 id="running-solvers-in-separate-processes">Running solvers in separate processes</h3>
+
+<p>Most of the SMT solvers are research projects — they are implemented via native libraries and are sometimes not 
+production ready:</p>
+<ul>
+  <li>they may ignore timeouts — they sometimes hang in a long-running operation, and you cannot interrupt it;</li>
+  <li>they may suddenly crash interrupting the entire process — because of a pointer issue, for example.</li>
+</ul>
+
+<p>KSMT runs each solver in a separate process, which adds to stability of your application and provides support for
+portfolio mode.</p>
+
+<h3 id="ksmt-distribution">KSMT distribution</h3>
+
+<p>Many solvers do not have prebuilt binaries, or binaries are for Linux only.</p>
+
+<p>KSMT is distributed as JVM library with solver binaries provided. The library has been tested against the SMT-LIB 
+benchmarks. Documentation and examples are also available.</p>
+
+-->
+        <p><a href="https://github.com/UnitTestBot/ksmt/actions/workflows/build-and-run-tests.yml"><img src="https://github.com/UnitTestBot/ksmt/actions/workflows/build-and-run-tests.yml/badge.svg" alt="KSMT: build"></a>
+<a href="https://central.sonatype.com/artifact/io.ksmt/ksmt-core/0.5.3"><img src="https://img.shields.io/maven-central/v/io.ksmt/ksmt-core" alt="Maven Central"></a>
+<a href="https://javadoc.io/doc/io.ksmt/ksmt-core"><img src="https://javadoc.io/badge2/io.ksmt/ksmt-core/javadoc.svg" alt="javadoc"></a></p>
+
+<p>Get the most out of SMT solving with the unified Kotlin/Java API:</p>
+<ul>
+  <li>Supporting more <a href="#supported-solvers-and-theories">solvers and theories</a> — for all popular operating systems</li>
+  <li>
+<a href="#solver-agnostic-formula-representation">Solver-agnostic formula representation</a> and easy-to-use <a href="#kotlin-based-dsl-for-smt-formulas">DSL</a>
+</li>
+  <li>Utilities to <a href="#utilities-to-simplify-and-transform-expressions">simplify and transform</a> your expressions</li>
+  <li>Switching between solvers and support for <a href="#using-multiple-solvers-portfolio-mode">portfolio mode</a>
+</li>
+  <li>Running solvers in a <a href="#running-solvers-in-separate-processes">separate process</a> to reduce timeout-related crashes</li>
+  <li>Streamlined <a href="#ksmt-distribution">solver delivery</a> with no need for building a solver or implementing JVM bindings</li>
+</ul>
+<h2 id="get-started">
+  
+  
+    Get started <a href="#get-started">#</a>
+  
+  
+</h2>
+    
+
+<p>To start using KSMT, install it via <a href="https://gradle.org/">Gradle</a>:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// core </span>
+<span class="nf">implementation</span><span class="p">(</span><span class="s">"io.ksmt:ksmt-core:0.5.3"</span><span class="p">)</span>
+<span class="c1">// z3 solver</span>
+<span class="nf">implementation</span><span class="p">(</span><span class="s">"io.ksmt:ksmt-z3:0.5.3"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Find basic instructions in the <a href="https://ksmt.io/getting-started">Getting started</a> guide and try it out with the 
+<a href="https://github.com/UnitTestBot/ksmt/tree/main/examples/src/main/kotlin">Kotlin</a> or <a href="https://github.com/UnitTestBot/ksmt/tree/main/examples/src/main/java">Java</a> examples.</p>
+
+<p>To go beyond the basic scenarios, proceed to the <a href="https://ksmt.io/advanced-usage">Advanced usage</a> guide and try the <a href="https://github.com/UnitTestBot/ksmt/tree/main/examples/src/main/kotlin/AdvancedExamples.kt">advanced 
+example</a>.</p>
+
+<p>To get guided experience in KSMT, step through the detailed scenario for creating 
+<a href="https://ksmt.io/custom-expressions">custom expressions</a>.</p>
+<h2 id="find-more-on-ksmt-features">
+  
+  
+    Find more on KSMT features <a href="#find-more-on-ksmt-features">#</a>
+  
+  
+</h2>
+    
+
+<p>Check the <a href="https://github.com/UnitTestBot/ksmt/blob/main/Requirements.md">Roadmap</a> to know more about current
+feature support and plans for the nearest future.</p>
+<h3 id="supported-solvers-and-theories">
+  
+  
+    Supported solvers and theories <a href="#supported-solvers-and-theories">#</a>
+  
+  
+</h3>
+    
+
+<p>KSMT provides support for various solvers:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>SMT solver</th>
+      <th style="text-align: center">Linux-x64</th>
+      <th style="text-align: center">Windows-x64</th>
+      <th style="text-align: center">macOS-aarch64</th>
+      <th style="text-align: center">macOS-x64</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://github.com/Z3Prover/z3">Z3</a></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/bitwuzla/bitwuzla">Bitwuzla</a></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/SRI-CSL/yices2">Yices2</a></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/cvc5/cvc5">cvc5</a></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>You can also use SMT solvers across multiple theories:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Theory</th>
+      <th style="text-align: center">Z3</th>
+      <th style="text-align: center">Bitwuzla</th>
+      <th style="text-align: center">Yices2</th>
+      <th style="text-align: center">cvc5</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Bitvectors</td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+    </tr>
+    <tr>
+      <td>Arrays</td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+    </tr>
+    <tr>
+      <td>IEEE Floats</td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+    </tr>
+    <tr>
+      <td>Uninterpreted Functions</td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+    </tr>
+    <tr>
+      <td>Arithmetic</td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+      <td style="text-align: center"><img class="emoji" title=":heavy_check_mark:" alt=":heavy_check_mark:" src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png" height="20" width="20"></td>
+    </tr>
+  </tbody>
+</table>
+<h3 id="solver-agnostic-formula-representation">
+  
+  
+    Solver-agnostic formula representation <a href="#solver-agnostic-formula-representation">#</a>
+  
+  
+</h3>
+    
+
+<p>Various scenarios are available for using SMT solvers: you can use a single solver to determine whether a formula is
+satisfiable, or you can apply several solvers to the same expression successively. In the latter case, you need a <em>solver-agnostic formula representation</em>.</p>
+
+<p>We implemented it in KSMT, so you can</p>
+<ul>
+  <li>transform expressions from the solver native representation to KSMT representation and vice versa,</li>
+  <li>use <em>formula introspection</em>,</li>
+  <li>manipulate expressions without involving a solver,</li>
+  <li>use expressions even if the solver is freed.</li>
+</ul>
+
+<p>Expression interning (hash consing) affords faster expression comparison: we do not need to compare the expression
+trees. Expressions are deduplicated, so we avoid redundant memory allocation.</p>
+<h3 id="kotlin-based-dsl-for-smt-formulas">
+  
+  
+    Kotlin-based DSL for SMT formulas <a href="#kotlin-based-dsl-for-smt-formulas">#</a>
+  
+  
+</h3>
+    
+
+<p>KSMT provides you with a unified DSL for SMT expressions:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">array</span> <span class="k">by</span> <span class="nf">mkArraySort</span><span class="p">(</span><span class="n">intSort</span><span class="p">,</span> <span class="n">intSort</span><span class="p">)</span>
+<span class="kd">val</span> <span class="py">index</span> <span class="k">by</span> <span class="n">intSort</span>
+<span class="kd">val</span> <span class="py">value</span> <span class="k">by</span> <span class="n">intSort</span>
+
+<span class="kd">val</span> <span class="py">expr</span> <span class="p">=</span> <span class="p">(</span><span class="n">array</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="n">index</span> <span class="p">-</span> <span class="mi">1</span><span class="p">.</span><span class="n">expr</span><span class="p">)</span> <span class="n">lt</span> <span class="n">value</span><span class="p">)</span> <span class="nf">and</span>
+        <span class="p">(</span><span class="n">array</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="n">index</span> <span class="p">+</span> <span class="mi">1</span><span class="p">.</span><span class="n">expr</span><span class="p">)</span> <span class="n">gt</span> <span class="n">value</span><span class="p">)</span>
+</code></pre></div></div>
+<h3 id="utilities-to-simplify-and-transform-expressions">
+  
+  
+    Utilities to simplify and transform expressions <a href="#utilities-to-simplify-and-transform-expressions">#</a>
+  
+  
+</h3>
+    
+
+<p>KSMT provides a simplification engine applicable to all supported expressions for all supported theories:</p>
+
+<ul>
+  <li>reduce expression size and complexity</li>
+  <li>evaluate expressions (including those with free variables) — reduce your expression to a constant</li>
+  <li>perform formula transformations</li>
+  <li>substitute expressions</li>
+</ul>
+
+<p>KSMT simplification engine implements more than 200 rules.
+By default, it attempts to apply simplifications when you create the expressions, but you can turn this
+feature off, if necessary. You can also simplify an arbitrary expression manually.</p>
+<h3 id="using-multiple-solvers-portfolio-mode">
+  
+  
+    Using multiple solvers (portfolio mode) <a href="#using-multiple-solvers-portfolio-mode">#</a>
+  
+  
+</h3>
+    
+
+<p>SMT solvers may differ in performance across different formulas:
+see the <a href="https://smt-comp.github.io/2022/">International Satisfiability Modulo Theories Competition</a>.</p>
+
+<p>With KSMT portfolio solving, you can run multiple solvers in parallel on the same formula — until you get the first
+(the fastest) result.</p>
+
+<p>For detailed instructions on running multiple solvers, see <a href="https://ksmt.io/advanced-usage">Advanced usage</a>.</p>
+<h3 id="running-solvers-in-separate-processes">
+  
+  
+    Running solvers in separate processes <a href="#running-solvers-in-separate-processes">#</a>
+  
+  
+</h3>
+    
+
+<p>Most of the SMT solvers are research projects — they are implemented via native libraries and are sometimes not 
+production ready:</p>
+<ul>
+  <li>they may ignore timeouts — they sometimes hang in a long-running operation, and you cannot interrupt it;</li>
+  <li>they may suddenly crash interrupting the entire process — because of a pointer issue, for example.</li>
+</ul>
+
+<p>KSMT runs each solver in a separate process, which adds to stability of your application and provides support for
+portfolio mode.</p>
+<h3 id="ksmt-distribution">
+  
+  
+    KSMT distribution <a href="#ksmt-distribution">#</a>
+  
+  
+</h3>
+    
+
+<p>Many solvers do not have prebuilt binaries, or binaries are for Linux only.</p>
+
+<p>KSMT is distributed as JVM library with solver binaries provided. The library has been tested against the SMT-LIB 
+benchmarks. Documentation and examples are also available.</p>
+
+
+
+    </section>
+<!--    <footer>-->
+<!--        -->
+<!--        <p>This project is maintained by <a href="https://github.com/olganaumenko">olganaumenko</a></p>-->
+<!--        -->
+<!--        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>-->
+<!--    </footer>-->
+</div>
+<script src="/assets/js/scale.fix.js"></script>
+</body>
+</html>

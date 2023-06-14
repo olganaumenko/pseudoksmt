@@ -1,20 +1,12 @@
 ---
+id: custom-expressions
 layout: default
 title: Custom expressions
 ---
 # Usage scenario: custom expressions
 
 To extend the KSMT expression system with the user-defined expressions, try 
-[custom expression example](https://github.com/UnitTestBot/ksmt/tree/main/examples/src/main/kotlin/CustomExpressions.kt) and follow the scenarios below:
-
-<!-- TOC -->
-  * [Defining expressions](#defining-expressions)
-    * [Base expression and transformer](#base-expression-and-transformer)
-    * [Defining a custom expression](#defining-a-custom-expression)
-  * [Rewriting expressions](#rewriting-expressions)
-  * [Managing expressions](#managing-expressions)
-  * [Misc: wrappers](#misc--wrappers)
-<!-- TOC -->
+[custom expression example](https://github.com/UnitTestBot/ksmt/tree/main/examples/src/main/kotlin/CustomExpressions.kt) and follow the scenarios below.
 
 ## Defining expressions
 

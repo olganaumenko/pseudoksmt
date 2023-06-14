@@ -1,4 +1,5 @@
 ---
+id: advanced-usage
 layout: default
 title: Advanced usage
 ---
@@ -6,21 +7,9 @@ title: Advanced usage
 
 For basic KSMT usage, please refer to [Getting started](https://ksmt.io/getting-started) guide.
 
-Having tried the essential scenarios, find the [advanced example](https://github.com/UnitTestBot/ksmt/tree/main/examples/src/main/kotlin/AdvancedExamples.kt) and proceed to advanced usage:
-
-<!-- TOC -->
-  * [Working with SMT formulas](#working-with-smt-formulas)
-    * [Parsing formulas in SMT-LIB2 format](#parsing-formulas-in-smt-lib2-format)
-    * [Default simplification](#default-simplification)
-    * [Manual simplification](#manual-simplification)
-    * [Expression substitution](#expression-substitution)
-  * [Working with SMT solvers](#working-with-smt-solvers)
-    * [Solver configuration](#solver-configuration)
-    * [Solver-independent models](#solver-independent-models)
-    * [Solver runner](#solver-runner)
-    * [Using custom solvers in a runner](#using-custom-solvers-in-a-runner)
-    * [Solver portfolio](#solver-portfolio)
-<!-- TOC -->
+Having tried the essential scenarios, find the 
+[advanced example](https://github.com/UnitTestBot/ksmt/tree/main/examples/src/main/kotlin/AdvancedExamples.kt) 
+and proceed to advanced usage.
 
 ## Working with SMT formulas
 

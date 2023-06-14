@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Advanced usage | Kotlin APIfor SMT solvers</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Advanced usage" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/advanced-usage.html" />
+<meta property="og:url" content="http://localhost:4000/advanced-usage.html" />
+<meta property="og:site_name" content="Kotlin APIfor SMT solvers" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Advanced usage" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"Advanced usage","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/assets/img/ksmt-logo.jpg"}},"url":"http://localhost:4000/advanced-usage.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=b9a11fae826d74d0a5623369f08e20d938a3d82e">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+</head>
+<body>
+<div class="wrapper">
+
+    <header>
+
+        
+        <img src="/assets/img/ksmt-logo.jpg" alt="Logo" />
+        
+
+        <h1><a href="http://localhost:4000/">Kotlin API<br/>for SMT solvers</a></h1>
+
+        <!--<h2>{"title"=>"Home", "url"=>"index.html"}{"title"=>"Getting started", "url"=>"getting-started.html"}{"title"=>"Advanced usage", "url"=>"advanced-usage.html"}{"title"=>"Custom expressions", "url"=>"custom-expressions.html"}</h2>-->
+<ul>
+    
+    <li><a href="index.html">Home</a></li>
+    
+    <li><a href="getting-started.html">Getting started</a></li>
+    
+    <li><a href="advanced-usage.html">Advanced usage</a></li>
+    
+    <li><a href="custom-expressions.html">Custom expressions</a></li>
+    
+</ul>
+
+<!--<ul>-->
+<!--    -->
+<!--    <li><a href="index.html">Home</a>-->
+<!--        -->
+<!--    </li>-->
+<!--    -->
+<!--    <li><a href="getting-started.html">Getting started</a>-->
+<!--        -->
+<!--    </li>-->
+<!--    -->
+<!--    <li><a href="advanced-usage.html">Advanced usage</a>-->
+<!--        -->
+<!--    </li>-->
+<!--    -->
+<!--    <li><a href="custom-expressions.html">Custom expressions</a>-->
+<!--        -->
+<!--    </li>-->
+<!--    -->
+<!--</ul>-->
+
+
+        <p></p>
+
+<!--        -->
+<!--        <p class="view"><a href="https://github.com/olganaumenko/pseudoksmt">View the Project on GitHub <small>olganaumenko/pseudoksmt</small></a></p>-->
+<!--        -->
+
+
+
+<!--        -->
+
+<!--        -->
+    </header>
+    <section>
+
+<!--        <h1 id="advanced-usage">Advanced usage</h1>
+
+<p>For basic KSMT usage, please refer to <a href="https://ksmt.io/getting-started">Getting started</a> guide.</p>
+
+<p>Having tried the essential scenarios, find the 
+<a href="https://github.com/UnitTestBot/ksmt/tree/main/examples/src/main/kotlin/AdvancedExamples.kt">advanced example</a> 
+and proceed to advanced usage.</p>
+
+<h2 id="working-with-smt-formulas">Working with SMT formulas</h2>
+
+<p>Learn how to parse, simplify, and substitute expressions.</p>
+
+<h3 id="parsing-formulas-in-smt-lib2-format">Parsing formulas in SMT-LIB2 format</h3>
+
+<p>KSMT provides an API for parsing formulas in the SMT-LIB2 format.
+Currently, KSMT provides a parser implemented on top of the Z3 solver API, and therefore <code class="language-plaintext highlighter-rouge">ksmt-z3</code> module is 
+required for parsing.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">formula</span> <span class="p">=</span> <span class="s">"""
+    (declare-fun x () Int)
+    (declare-fun y () Int)
+    (assert (&gt;= x y))
+    (assert (&gt;= y x))
+"""</span>
+<span class="nf">with</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span> <span class="p">{</span>
+   <span class="kd">val</span> <span class="py">assertions</span> <span class="p">=</span> <span class="nc">KZ3SMTLibParser</span><span class="p">().</span><span class="nf">parse</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="default-simplification">Default simplification</h3>
+
+<p>By default, <code class="language-plaintext highlighter-rouge">KContext</code> attempts to apply lightweight simplifications when you create an expression. If you do not 
+need simplifications, disable them using the <code class="language-plaintext highlighter-rouge">KContext.simplificationMode</code> parameter.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Simplification is enabled by default</span>
+<span class="kd">val</span> <span class="py">simplifyingContext</span> <span class="p">=</span> <span class="nc">KContext</span><span class="p">()</span>
+
+<span class="c1">// Disable simplifications on a context level</span>
+<span class="kd">val</span> <span class="py">nonSimplifyingContext</span> <span class="p">=</span> <span class="nc">KContext</span><span class="p">(</span><span class="n">simplificationMode</span> <span class="p">=</span> <span class="nc">KContext</span><span class="p">.</span><span class="nc">SimplificationMode</span><span class="p">.</span><span class="nc">NO_SIMPLIFY</span><span class="p">)</span>
+
+<span class="kd">val</span> <span class="py">simplifiedExpr</span> <span class="p">=</span> <span class="nf">with</span><span class="p">(</span><span class="n">simplifyingContext</span><span class="p">)</span> <span class="p">{</span>
+   <span class="kd">val</span> <span class="py">a</span> <span class="k">by</span> <span class="n">boolSort</span>
+   <span class="p">!(</span><span class="n">a</span> <span class="n">and</span> <span class="n">falseExpr</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">val</span> <span class="py">nonSimplifiedExpr</span> <span class="p">=</span> <span class="nf">with</span><span class="p">(</span><span class="n">nonSimplifyingContext</span><span class="p">)</span> <span class="p">{</span>
+   <span class="kd">val</span> <span class="py">a</span> <span class="k">by</span> <span class="n">boolSort</span>
+   <span class="p">!(</span><span class="n">a</span> <span class="n">and</span> <span class="n">falseExpr</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nf">println</span><span class="p">(</span><span class="n">nonSimplifiedExpr</span><span class="p">)</span> <span class="c1">// (not (and a false))</span>
+<span class="nf">println</span><span class="p">(</span><span class="n">simplifiedExpr</span><span class="p">)</span> <span class="c1">// true</span>
+</code></pre></div></div>
+
+<h3 id="manual-simplification">Manual simplification</h3>
+
+<p>KSMT provides <code class="language-plaintext highlighter-rouge">KExprSimplifier</code>, so you can manually simplify an arbitrary expression.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Context does not simplify expressions during creation</span>
+<span class="kd">val</span> <span class="py">ctx</span> <span class="p">=</span> <span class="nc">KContext</span><span class="p">(</span><span class="n">simplificationMode</span> <span class="p">=</span> <span class="nc">KContext</span><span class="p">.</span><span class="nc">SimplificationMode</span><span class="p">.</span><span class="nc">NO_SIMPLIFY</span><span class="p">)</span>
+
+<span class="nf">with</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span> <span class="p">{</span>
+   <span class="kd">val</span> <span class="py">a</span> <span class="k">by</span> <span class="n">boolSort</span>
+   <span class="kd">val</span> <span class="py">nonSimplifiedExpr</span> <span class="p">=</span> <span class="p">!(</span><span class="n">a</span> <span class="n">and</span> <span class="n">falseExpr</span><span class="p">)</span>
+
+   <span class="kd">val</span> <span class="py">simplifier</span> <span class="p">=</span> <span class="nc">KExprSimplifier</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+   <span class="kd">val</span> <span class="py">simplifiedExpr</span> <span class="p">=</span> <span class="n">simplifier</span><span class="p">.</span><span class="nf">apply</span><span class="p">(</span><span class="n">nonSimplifiedExpr</span><span class="p">)</span>
+
+   <span class="nf">println</span><span class="p">(</span><span class="n">nonSimplifiedExpr</span><span class="p">)</span> <span class="c1">// (not (and a false))</span>
+   <span class="nf">println</span><span class="p">(</span><span class="n">simplifiedExpr</span><span class="p">)</span> <span class="c1">// true</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="expression-substitution">Expression substitution</h3>
+
+<p>KSMT provides <code class="language-plaintext highlighter-rouge">KExprSubstitutor</code>, so you can replace all the expression occurrences with another
+expression.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">a</span> <span class="k">by</span> <span class="n">boolSort</span>
+<span class="kd">val</span> <span class="py">b</span> <span class="k">by</span> <span class="n">boolSort</span>
+<span class="kd">val</span> <span class="py">expr</span> <span class="p">=</span> <span class="p">!(</span><span class="n">a</span> <span class="n">and</span> <span class="n">b</span><span class="p">)</span>
+
+<span class="kd">val</span> <span class="py">substitutor</span> <span class="p">=</span> <span class="nc">KExprSubstitutor</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nf">apply</span> <span class="p">{</span>
+   <span class="c1">// Substitute all occurrences of `b` with `false`</span>
+   <span class="nf">substitute</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">falseExpr</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">val</span> <span class="py">exprAfterSubstitution</span> <span class="p">=</span> <span class="n">substitutor</span><span class="p">.</span><span class="nf">apply</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+
+<span class="nf">println</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span> <span class="c1">// (not (and a b))</span>
+<span class="nf">println</span><span class="p">(</span><span class="n">exprAfterSubstitution</span><span class="p">)</span> <span class="c1">// true</span>
+</code></pre></div></div>
+
+<h2 id="working-with-smt-solvers">Working with SMT solvers</h2>
+
+<p>Learn how to configure and run solvers, get models, and switch to portfolio mode.</p>
+
+<h3 id="solver-configuration">Solver configuration</h3>
+
+<p>KSMT provides an API for modifying solver-specific parameters.
+Since the parameters and their correct values are solver-specific,
+KSMT does not perform any checks.
+See corresponding solver documentation for a list of available options.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">with</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nc">KZ3Solver</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nf">use</span> <span class="p">{</span> <span class="n">solver</span> <span class="p">-&gt;</span>
+      <span class="n">solver</span><span class="p">.</span><span class="nf">configure</span> <span class="p">{</span>
+         <span class="c1">// set Z3 solver `random_seed` parameter to 42 </span>
+         <span class="nf">setZ3Option</span><span class="p">(</span><span class="s">"random_seed"</span><span class="p">,</span> <span class="mi">42</span><span class="p">)</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="solver-independent-models">Solver-independent models</h3>
+
+<p>By default, SMT solver models are lazily initialized.
+The values of the declared variables are loaded from the underlying solver native model on demand.
+Therefore, models become invalid as soon as the solver closes. Moreover, solvers like Bitwuzla invalidate their models 
+each time <code class="language-plaintext highlighter-rouge">check-sat</code> is called.
+To overcome these problems, KSMT provides the <code class="language-plaintext highlighter-rouge">KModel.detach</code> function that allows you to make the model independent of
+the underlying native representation.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">a</span> <span class="k">by</span> <span class="n">boolSort</span>
+<span class="kd">val</span> <span class="py">b</span> <span class="k">by</span> <span class="n">boolSort</span>
+<span class="kd">val</span> <span class="py">expr</span> <span class="p">=</span> <span class="n">a</span> <span class="n">and</span> <span class="n">b</span>
+
+<span class="kd">val</span> <span class="p">(</span><span class="py">model</span><span class="p">,</span> <span class="py">detachedModel</span><span class="p">)</span> <span class="p">=</span> <span class="nc">KZ3Solver</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nf">use</span> <span class="p">{</span> <span class="n">solver</span> <span class="p">-&gt;</span>
+   <span class="n">solver</span><span class="p">.</span><span class="nf">assert</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+   <span class="nf">println</span><span class="p">(</span><span class="n">solver</span><span class="p">.</span><span class="nf">check</span><span class="p">())</span> <span class="c1">// SAT</span>
+   <span class="kd">val</span> <span class="py">model</span> <span class="p">=</span> <span class="n">solver</span><span class="p">.</span><span class="nf">model</span><span class="p">()</span>
+
+   <span class="c1">// Detach model from solver</span>
+   <span class="kd">val</span> <span class="py">detachedModel</span> <span class="p">=</span> <span class="n">model</span><span class="p">.</span><span class="nf">detach</span><span class="p">()</span>
+
+   <span class="n">model</span> <span class="n">to</span> <span class="n">detachedModel</span>
+<span class="p">}</span>
+
+<span class="k">try</span> <span class="p">{</span>
+   <span class="n">model</span><span class="p">.</span><span class="nf">eval</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">ex</span><span class="p">:</span> <span class="nc">Exception</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nf">println</span><span class="p">(</span><span class="s">"Model no longer valid after solver close"</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nf">println</span><span class="p">(</span><span class="n">detachedModel</span><span class="p">.</span><span class="nf">eval</span><span class="p">(</span><span class="n">expr</span><span class="p">))</span> <span class="c1">// true</span>
+</code></pre></div></div>
+
+<p>Note: it is recommended to use <code class="language-plaintext highlighter-rouge">KModel.detach</code> when you need to keep the model in a <code class="language-plaintext highlighter-rouge">List</code>, for example.</p>
+
+<h3 id="solver-runner">Solver runner</h3>
+
+<p>SMT solvers may ignore timeouts, or they suddenly crash, thus interrupting the entire application process.
+KSMT provides a process-based solver runner: it runs each solver in a separate process.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Create a long-lived solver manager that manages a pool of solver workers</span>
+<span class="nc">KSolverRunnerManager</span><span class="p">().</span><span class="nf">use</span> <span class="p">{</span> <span class="n">solverManager</span> <span class="p">-&gt;</span>
+
+   <span class="c1">// Use solver API as usual</span>
+   <span class="nf">with</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">val</span> <span class="py">a</span> <span class="k">by</span> <span class="n">boolSort</span>
+      <span class="kd">val</span> <span class="py">b</span> <span class="k">by</span> <span class="n">boolSort</span>
+      <span class="kd">val</span> <span class="py">expr</span> <span class="p">=</span> <span class="n">a</span> <span class="n">and</span> <span class="n">b</span>
+
+      <span class="c1">// Create solver using manager instead of direct constructor invocation</span>
+      <span class="n">solverManager</span><span class="p">.</span><span class="nf">createSolver</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nc">KZ3Solver</span><span class="o">::</span><span class="k">class</span><span class="p">).</span><span class="nf">use</span> <span class="p">{</span> <span class="n">solver</span> <span class="p">-&gt;</span>
+         <span class="n">solver</span><span class="p">.</span><span class="nf">assert</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+         <span class="nf">println</span><span class="p">(</span><span class="n">solver</span><span class="p">.</span><span class="nf">check</span><span class="p">())</span> <span class="c1">// SAT</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="using-custom-solvers-in-a-runner">Using custom solvers in a runner</h3>
+
+<p>Solver runner also supports user-defined solvers. Custom solvers must be registered via <code class="language-plaintext highlighter-rouge">registerSolver</code> before being used in the runner.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Create a long-lived solver manager that manages a pool of solver workers</span>
+<span class="nc">KSolverRunnerManager</span><span class="p">().</span><span class="nf">use</span> <span class="p">{</span> <span class="n">solverManager</span> <span class="p">-&gt;</span>
+   <span class="c1">// Register the user-defined solver in a current manager</span>
+   <span class="n">solverManager</span><span class="p">.</span><span class="nf">registerSolver</span><span class="p">(</span><span class="nc">CustomZ3BasedSolver</span><span class="o">::</span><span class="k">class</span><span class="p">,</span> <span class="nc">KZ3SolverUniversalConfiguration</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+
+   <span class="c1">// Use solver API as usual</span>
+   <span class="nf">with</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">val</span> <span class="py">a</span> <span class="k">by</span> <span class="n">boolSort</span>
+      <span class="kd">val</span> <span class="py">b</span> <span class="k">by</span> <span class="n">boolSort</span>
+      <span class="kd">val</span> <span class="py">expr</span> <span class="p">=</span> <span class="n">a</span> <span class="n">and</span> <span class="n">b</span>
+
+      <span class="c1">// Create solver using manager instead of direct constructor invocation</span>
+      <span class="n">solverManager</span><span class="p">.</span><span class="nf">createSolver</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nc">CustomZ3BasedSolver</span><span class="o">::</span><span class="k">class</span><span class="p">).</span><span class="nf">use</span> <span class="p">{</span> <span class="n">solver</span> <span class="p">-&gt;</span>
+         <span class="n">solver</span><span class="p">.</span><span class="nf">assert</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+         <span class="nf">println</span><span class="p">(</span><span class="n">solver</span><span class="p">.</span><span class="nf">check</span><span class="p">())</span> <span class="c1">// SAT</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="solver-portfolio">Solver portfolio</h3>
+
+<p>To run solvers in portfolio mode, i.e., to run them in parallel until you get the first result, try the following 
+workflow, which is similar to using the solver runner:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Create a long-lived portfolio solver manager that manages a pool of solver workers</span>
+<span class="nc">KPortfolioSolverManager</span><span class="p">(</span>
+   <span class="c1">// Solvers to include in portfolio</span>
+   <span class="nf">listOf</span><span class="p">(</span><span class="nc">KZ3Solver</span><span class="o">::</span><span class="k">class</span><span class="p">,</span> <span class="nc">CustomZ3BasedSolver</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+<span class="p">).</span><span class="nf">use</span> <span class="p">{</span> <span class="n">solverManager</span> <span class="p">-&gt;</span>
+   <span class="c1">// Since we use the user-defined solver in our portfolio, we must register it in the current manager</span>
+   <span class="n">solverManager</span><span class="p">.</span><span class="nf">registerSolver</span><span class="p">(</span><span class="nc">CustomZ3BasedSolver</span><span class="o">::</span><span class="k">class</span><span class="p">,</span> <span class="nc">KZ3SolverUniversalConfiguration</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+
+   <span class="c1">// Use solver API as usual</span>
+   <span class="nf">with</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">val</span> <span class="py">a</span> <span class="k">by</span> <span class="n">boolSort</span>
+      <span class="kd">val</span> <span class="py">b</span> <span class="k">by</span> <span class="n">boolSort</span>
+      <span class="kd">val</span> <span class="py">expr</span> <span class="p">=</span> <span class="n">a</span> <span class="n">and</span> <span class="n">b</span>
+
+      <span class="c1">// Create portfolio solver using manager</span>
+      <span class="n">solverManager</span><span class="p">.</span><span class="nf">createPortfolioSolver</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nf">use</span> <span class="p">{</span> <span class="n">solver</span> <span class="p">-&gt;</span>
+         <span class="n">solver</span><span class="p">.</span><span class="nf">assert</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+         <span class="nf">println</span><span class="p">(</span><span class="n">solver</span><span class="p">.</span><span class="nf">check</span><span class="p">())</span> <span class="c1">// SAT</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+-->
+        <h1 id="advanced-usage">
+  
+  
+    Advanced usage <a href="#advanced-usage">#</a>
+  
+  
+</h1>
+    
+
+<p>For basic KSMT usage, please refer to <a href="https://ksmt.io/getting-started">Getting started</a> guide.</p>
+
+<p>Having tried the essential scenarios, find the 
+<a href="https://github.com/UnitTestBot/ksmt/tree/main/examples/src/main/kotlin/AdvancedExamples.kt">advanced example</a> 
+and proceed to advanced usage.</p>
+<h2 id="working-with-smt-formulas">
+  
+  
+    Working with SMT formulas <a href="#working-with-smt-formulas">#</a>
+  
+  
+</h2>
+    
+
+<p>Learn how to parse, simplify, and substitute expressions.</p>
+<h3 id="parsing-formulas-in-smt-lib2-format">
+  
+  
+    Parsing formulas in SMT-LIB2 format <a href="#parsing-formulas-in-smt-lib2-format">#</a>
+  
+  
+</h3>
+    
+
+<p>KSMT provides an API for parsing formulas in the SMT-LIB2 format.
+Currently, KSMT provides a parser implemented on top of the Z3 solver API, and therefore <code class="language-plaintext highlighter-rouge">ksmt-z3</code> module is 
+required for parsing.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">formula</span> <span class="p">=</span> <span class="s">"""
+    (declare-fun x () Int)
+    (declare-fun y () Int)
+    (assert (&gt;= x y))
+    (assert (&gt;= y x))
+"""</span>
+<span class="nf">with</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span> <span class="p">{</span>
+   <span class="kd">val</span> <span class="py">assertions</span> <span class="p">=</span> <span class="nc">KZ3SMTLibParser</span><span class="p">().</span><span class="nf">parse</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h3 id="default-simplification">
+  
+  
+    Default simplification <a href="#default-simplification">#</a>
+  
+  
+</h3>
+    
+
+<p>By default, <code class="language-plaintext highlighter-rouge">KContext</code> attempts to apply lightweight simplifications when you create an expression. If you do not 
+need simplifications, disable them using the <code class="language-plaintext highlighter-rouge">KContext.simplificationMode</code> parameter.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Simplification is enabled by default</span>
+<span class="kd">val</span> <span class="py">simplifyingContext</span> <span class="p">=</span> <span class="nc">KContext</span><span class="p">()</span>
+
+<span class="c1">// Disable simplifications on a context level</span>
+<span class="kd">val</span> <span class="py">nonSimplifyingContext</span> <span class="p">=</span> <span class="nc">KContext</span><span class="p">(</span><span class="n">simplificationMode</span> <span class="p">=</span> <span class="nc">KContext</span><span class="p">.</span><span class="nc">SimplificationMode</span><span class="p">.</span><span class="nc">NO_SIMPLIFY</span><span class="p">)</span>
+
+<span class="kd">val</span> <span class="py">simplifiedExpr</span> <span class="p">=</span> <span class="nf">with</span><span class="p">(</span><span class="n">simplifyingContext</span><span class="p">)</span> <span class="p">{</span>
+   <span class="kd">val</span> <span class="py">a</span> <span class="k">by</span> <span class="n">boolSort</span>
+   <span class="p">!(</span><span class="n">a</span> <span class="n">and</span> <span class="n">falseExpr</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">val</span> <span class="py">nonSimplifiedExpr</span> <span class="p">=</span> <span class="nf">with</span><span class="p">(</span><span class="n">nonSimplifyingContext</span><span class="p">)</span> <span class="p">{</span>
+   <span class="kd">val</span> <span class="py">a</span> <span class="k">by</span> <span class="n">boolSort</span>
+   <span class="p">!(</span><span class="n">a</span> <span class="n">and</span> <span class="n">falseExpr</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nf">println</span><span class="p">(</span><span class="n">nonSimplifiedExpr</span><span class="p">)</span> <span class="c1">// (not (and a false))</span>
+<span class="nf">println</span><span class="p">(</span><span class="n">simplifiedExpr</span><span class="p">)</span> <span class="c1">// true</span>
+</code></pre></div></div>
+<h3 id="manual-simplification">
+  
+  
+    Manual simplification <a href="#manual-simplification">#</a>
+  
+  
+</h3>
+    
+
+<p>KSMT provides <code class="language-plaintext highlighter-rouge">KExprSimplifier</code>, so you can manually simplify an arbitrary expression.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Context does not simplify expressions during creation</span>
+<span class="kd">val</span> <span class="py">ctx</span> <span class="p">=</span> <span class="nc">KContext</span><span class="p">(</span><span class="n">simplificationMode</span> <span class="p">=</span> <span class="nc">KContext</span><span class="p">.</span><span class="nc">SimplificationMode</span><span class="p">.</span><span class="nc">NO_SIMPLIFY</span><span class="p">)</span>
+
+<span class="nf">with</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span> <span class="p">{</span>
+   <span class="kd">val</span> <span class="py">a</span> <span class="k">by</span> <span class="n">boolSort</span>
+   <span class="kd">val</span> <span class="py">nonSimplifiedExpr</span> <span class="p">=</span> <span class="p">!(</span><span class="n">a</span> <span class="n">and</span> <span class="n">falseExpr</span><span class="p">)</span>
+
+   <span class="kd">val</span> <span class="py">simplifier</span> <span class="p">=</span> <span class="nc">KExprSimplifier</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+   <span class="kd">val</span> <span class="py">simplifiedExpr</span> <span class="p">=</span> <span class="n">simplifier</span><span class="p">.</span><span class="nf">apply</span><span class="p">(</span><span class="n">nonSimplifiedExpr</span><span class="p">)</span>
+
+   <span class="nf">println</span><span class="p">(</span><span class="n">nonSimplifiedExpr</span><span class="p">)</span> <span class="c1">// (not (and a false))</span>
+   <span class="nf">println</span><span class="p">(</span><span class="n">simplifiedExpr</span><span class="p">)</span> <span class="c1">// true</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h3 id="expression-substitution">
+  
+  
+    Expression substitution <a href="#expression-substitution">#</a>
+  
+  
+</h3>
+    
+
+<p>KSMT provides <code class="language-plaintext highlighter-rouge">KExprSubstitutor</code>, so you can replace all the expression occurrences with another
+expression.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">a</span> <span class="k">by</span> <span class="n">boolSort</span>
+<span class="kd">val</span> <span class="py">b</span> <span class="k">by</span> <span class="n">boolSort</span>
+<span class="kd">val</span> <span class="py">expr</span> <span class="p">=</span> <span class="p">!(</span><span class="n">a</span> <span class="n">and</span> <span class="n">b</span><span class="p">)</span>
+
+<span class="kd">val</span> <span class="py">substitutor</span> <span class="p">=</span> <span class="nc">KExprSubstitutor</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nf">apply</span> <span class="p">{</span>
+   <span class="c1">// Substitute all occurrences of `b` with `false`</span>
+   <span class="nf">substitute</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">falseExpr</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">val</span> <span class="py">exprAfterSubstitution</span> <span class="p">=</span> <span class="n">substitutor</span><span class="p">.</span><span class="nf">apply</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+
+<span class="nf">println</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span> <span class="c1">// (not (and a b))</span>
+<span class="nf">println</span><span class="p">(</span><span class="n">exprAfterSubstitution</span><span class="p">)</span> <span class="c1">// true</span>
+</code></pre></div></div>
+<h2 id="working-with-smt-solvers">
+  
+  
+    Working with SMT solvers <a href="#working-with-smt-solvers">#</a>
+  
+  
+</h2>
+    
+
+<p>Learn how to configure and run solvers, get models, and switch to portfolio mode.</p>
+<h3 id="solver-configuration">
+  
+  
+    Solver configuration <a href="#solver-configuration">#</a>
+  
+  
+</h3>
+    
+
+<p>KSMT provides an API for modifying solver-specific parameters.
+Since the parameters and their correct values are solver-specific,
+KSMT does not perform any checks.
+See corresponding solver documentation for a list of available options.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">with</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nc">KZ3Solver</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nf">use</span> <span class="p">{</span> <span class="n">solver</span> <span class="p">-&gt;</span>
+      <span class="n">solver</span><span class="p">.</span><span class="nf">configure</span> <span class="p">{</span>
+         <span class="c1">// set Z3 solver `random_seed` parameter to 42 </span>
+         <span class="nf">setZ3Option</span><span class="p">(</span><span class="s">"random_seed"</span><span class="p">,</span> <span class="mi">42</span><span class="p">)</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h3 id="solver-independent-models">
+  
+  
+    Solver-independent models <a href="#solver-independent-models">#</a>
+  
+  
+</h3>
+    
+
+<p>By default, SMT solver models are lazily initialized.
+The values of the declared variables are loaded from the underlying solver native model on demand.
+Therefore, models become invalid as soon as the solver closes. Moreover, solvers like Bitwuzla invalidate their models 
+each time <code class="language-plaintext highlighter-rouge">check-sat</code> is called.
+To overcome these problems, KSMT provides the <code class="language-plaintext highlighter-rouge">KModel.detach</code> function that allows you to make the model independent of
+the underlying native representation.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">a</span> <span class="k">by</span> <span class="n">boolSort</span>
+<span class="kd">val</span> <span class="py">b</span> <span class="k">by</span> <span class="n">boolSort</span>
+<span class="kd">val</span> <span class="py">expr</span> <span class="p">=</span> <span class="n">a</span> <span class="n">and</span> <span class="n">b</span>
+
+<span class="kd">val</span> <span class="p">(</span><span class="py">model</span><span class="p">,</span> <span class="py">detachedModel</span><span class="p">)</span> <span class="p">=</span> <span class="nc">KZ3Solver</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nf">use</span> <span class="p">{</span> <span class="n">solver</span> <span class="p">-&gt;</span>
+   <span class="n">solver</span><span class="p">.</span><span class="nf">assert</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+   <span class="nf">println</span><span class="p">(</span><span class="n">solver</span><span class="p">.</span><span class="nf">check</span><span class="p">())</span> <span class="c1">// SAT</span>
+   <span class="kd">val</span> <span class="py">model</span> <span class="p">=</span> <span class="n">solver</span><span class="p">.</span><span class="nf">model</span><span class="p">()</span>
+
+   <span class="c1">// Detach model from solver</span>
+   <span class="kd">val</span> <span class="py">detachedModel</span> <span class="p">=</span> <span class="n">model</span><span class="p">.</span><span class="nf">detach</span><span class="p">()</span>
+
+   <span class="n">model</span> <span class="n">to</span> <span class="n">detachedModel</span>
+<span class="p">}</span>
+
+<span class="k">try</span> <span class="p">{</span>
+   <span class="n">model</span><span class="p">.</span><span class="nf">eval</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">ex</span><span class="p">:</span> <span class="nc">Exception</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nf">println</span><span class="p">(</span><span class="s">"Model no longer valid after solver close"</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nf">println</span><span class="p">(</span><span class="n">detachedModel</span><span class="p">.</span><span class="nf">eval</span><span class="p">(</span><span class="n">expr</span><span class="p">))</span> <span class="c1">// true</span>
+</code></pre></div></div>
+
+<p>Note: it is recommended to use <code class="language-plaintext highlighter-rouge">KModel.detach</code> when you need to keep the model in a <code class="language-plaintext highlighter-rouge">List</code>, for example.</p>
+<h3 id="solver-runner">
+  
+  
+    Solver runner <a href="#solver-runner">#</a>
+  
+  
+</h3>
+    
+
+<p>SMT solvers may ignore timeouts, or they suddenly crash, thus interrupting the entire application process.
+KSMT provides a process-based solver runner: it runs each solver in a separate process.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Create a long-lived solver manager that manages a pool of solver workers</span>
+<span class="nc">KSolverRunnerManager</span><span class="p">().</span><span class="nf">use</span> <span class="p">{</span> <span class="n">solverManager</span> <span class="p">-&gt;</span>
+
+   <span class="c1">// Use solver API as usual</span>
+   <span class="nf">with</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">val</span> <span class="py">a</span> <span class="k">by</span> <span class="n">boolSort</span>
+      <span class="kd">val</span> <span class="py">b</span> <span class="k">by</span> <span class="n">boolSort</span>
+      <span class="kd">val</span> <span class="py">expr</span> <span class="p">=</span> <span class="n">a</span> <span class="n">and</span> <span class="n">b</span>
+
+      <span class="c1">// Create solver using manager instead of direct constructor invocation</span>
+      <span class="n">solverManager</span><span class="p">.</span><span class="nf">createSolver</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nc">KZ3Solver</span><span class="o">::</span><span class="k">class</span><span class="p">).</span><span class="nf">use</span> <span class="p">{</span> <span class="n">solver</span> <span class="p">-&gt;</span>
+         <span class="n">solver</span><span class="p">.</span><span class="nf">assert</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+         <span class="nf">println</span><span class="p">(</span><span class="n">solver</span><span class="p">.</span><span class="nf">check</span><span class="p">())</span> <span class="c1">// SAT</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h3 id="using-custom-solvers-in-a-runner">
+  
+  
+    Using custom solvers in a runner <a href="#using-custom-solvers-in-a-runner">#</a>
+  
+  
+</h3>
+    
+
+<p>Solver runner also supports user-defined solvers. Custom solvers must be registered via <code class="language-plaintext highlighter-rouge">registerSolver</code> before being used in the runner.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Create a long-lived solver manager that manages a pool of solver workers</span>
+<span class="nc">KSolverRunnerManager</span><span class="p">().</span><span class="nf">use</span> <span class="p">{</span> <span class="n">solverManager</span> <span class="p">-&gt;</span>
+   <span class="c1">// Register the user-defined solver in a current manager</span>
+   <span class="n">solverManager</span><span class="p">.</span><span class="nf">registerSolver</span><span class="p">(</span><span class="nc">CustomZ3BasedSolver</span><span class="o">::</span><span class="k">class</span><span class="p">,</span> <span class="nc">KZ3SolverUniversalConfiguration</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+
+   <span class="c1">// Use solver API as usual</span>
+   <span class="nf">with</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">val</span> <span class="py">a</span> <span class="k">by</span> <span class="n">boolSort</span>
+      <span class="kd">val</span> <span class="py">b</span> <span class="k">by</span> <span class="n">boolSort</span>
+      <span class="kd">val</span> <span class="py">expr</span> <span class="p">=</span> <span class="n">a</span> <span class="n">and</span> <span class="n">b</span>
+
+      <span class="c1">// Create solver using manager instead of direct constructor invocation</span>
+      <span class="n">solverManager</span><span class="p">.</span><span class="nf">createSolver</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nc">CustomZ3BasedSolver</span><span class="o">::</span><span class="k">class</span><span class="p">).</span><span class="nf">use</span> <span class="p">{</span> <span class="n">solver</span> <span class="p">-&gt;</span>
+         <span class="n">solver</span><span class="p">.</span><span class="nf">assert</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+         <span class="nf">println</span><span class="p">(</span><span class="n">solver</span><span class="p">.</span><span class="nf">check</span><span class="p">())</span> <span class="c1">// SAT</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h3 id="solver-portfolio">
+  
+  
+    Solver portfolio <a href="#solver-portfolio">#</a>
+  
+  
+</h3>
+    
+
+<p>To run solvers in portfolio mode, i.e., to run them in parallel until you get the first result, try the following 
+workflow, which is similar to using the solver runner:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Create a long-lived portfolio solver manager that manages a pool of solver workers</span>
+<span class="nc">KPortfolioSolverManager</span><span class="p">(</span>
+   <span class="c1">// Solvers to include in portfolio</span>
+   <span class="nf">listOf</span><span class="p">(</span><span class="nc">KZ3Solver</span><span class="o">::</span><span class="k">class</span><span class="p">,</span> <span class="nc">CustomZ3BasedSolver</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+<span class="p">).</span><span class="nf">use</span> <span class="p">{</span> <span class="n">solverManager</span> <span class="p">-&gt;</span>
+   <span class="c1">// Since we use the user-defined solver in our portfolio, we must register it in the current manager</span>
+   <span class="n">solverManager</span><span class="p">.</span><span class="nf">registerSolver</span><span class="p">(</span><span class="nc">CustomZ3BasedSolver</span><span class="o">::</span><span class="k">class</span><span class="p">,</span> <span class="nc">KZ3SolverUniversalConfiguration</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+
+   <span class="c1">// Use solver API as usual</span>
+   <span class="nf">with</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">val</span> <span class="py">a</span> <span class="k">by</span> <span class="n">boolSort</span>
+      <span class="kd">val</span> <span class="py">b</span> <span class="k">by</span> <span class="n">boolSort</span>
+      <span class="kd">val</span> <span class="py">expr</span> <span class="p">=</span> <span class="n">a</span> <span class="n">and</span> <span class="n">b</span>
+
+      <span class="c1">// Create portfolio solver using manager</span>
+      <span class="n">solverManager</span><span class="p">.</span><span class="nf">createPortfolioSolver</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nf">use</span> <span class="p">{</span> <span class="n">solver</span> <span class="p">-&gt;</span>
+         <span class="n">solver</span><span class="p">.</span><span class="nf">assert</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+         <span class="nf">println</span><span class="p">(</span><span class="n">solver</span><span class="p">.</span><span class="nf">check</span><span class="p">())</span> <span class="c1">// SAT</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+
+    </section>
+<!--    <footer>-->
+<!--        -->
+<!--        <p>This project is maintained by <a href="https://github.com/olganaumenko">olganaumenko</a></p>-->
+<!--        -->
+<!--        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>-->
+<!--    </footer>-->
+</div>
+<script src="/assets/js/scale.fix.js"></script>
+</body>
+</html>
