@@ -57,7 +57,7 @@ color_scheme: dark
 
 callouts:
   highlight:
-    #    title: Highlight
+#    title: Highlight
     color: grey-dk
 
 callouts_opacity: 0.1
