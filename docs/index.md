@@ -1,22 +1,27 @@
 ---
-id: home
 layout: default
-title: Getting started
+title: Overview
+nav_order: 1
 ---
+
+# Kotlin API for various SMT solvers
+{: .no_toc }
 
 [![KSMT: build](https://github.com/UnitTestBot/ksmt/actions/workflows/build-and-run-tests.yml/badge.svg)](https://github.com/UnitTestBot/ksmt/actions/workflows/build-and-run-tests.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/io.ksmt/ksmt-core)](https://central.sonatype.com/artifact/io.ksmt/ksmt-core/0.5.3)
 [![javadoc](https://javadoc.io/badge2/io.ksmt/ksmt-core/javadoc.svg)](https://javadoc.io/doc/io.ksmt/ksmt-core)
 
-Get the most out of SMT solving with the unified Kotlin/Java API:
-* Supporting more [solvers and theories](#supported-solvers-and-theories) — for all popular operating systems
-* [Solver-agnostic formula representation](#solver-agnostic-formula-representation) and easy-to-use [DSL](#kotlin-based-dsl-for-smt-formulas)
-* Utilities to [simplify and transform](#utilities-to-simplify-and-transform-expressions) your expressions
-* Switching between solvers and support for [portfolio mode](#using-multiple-solvers-portfolio-mode)
-* Running solvers in a [separate process](#running-solvers-in-separate-processes) to reduce timeout-related crashes
-* Streamlined [solver delivery](#ksmt-distribution) with no need for building a solver or implementing JVM bindings
+{: .highlight }
+> Get the most out of SMT solving with the unified Kotlin/Java API:
+> * Supporting more [solvers and theories](#supported-solvers-and-theories) — for all popular operating systems
+> * [Solver-agnostic formula representation](#solver-agnostic-formula-representation) and easy-to-use [DSL](#kotlin-based-dsl-for-smt-formulas)
+> * Utilities to [simplify and transform](#utilities-to-simplify-and-transform-expressions) your expressions
+> * Switching between solvers and support for [portfolio mode](#using-multiple-solvers-portfolio-mode)
+> * Running solvers in a [separate process](#running-solvers-in-separate-processes) to reduce timeout-related crashes
+> * Streamlined [solver delivery](#ksmt-distribution) with no need for building a solver or implementing JVM bindings
 
-## Get started
+---
+## Quick start
 
 To start using KSMT, install it via [Gradle](https://gradle.org/):
 
@@ -36,32 +41,35 @@ example](https://github.com/UnitTestBot/ksmt/tree/main/examples/src/main/kotlin/
 To get guided experience in KSMT, step through the detailed scenario for creating 
 [custom expressions](https://ksmt.io/custom-expressions).
 
-## Find more on KSMT features
+---
+## Key features
 
 Check the [Roadmap](https://github.com/UnitTestBot/ksmt/blob/main/Requirements.md) to know more about current
 feature support and plans for the nearest future.
 
+---
 ### Supported solvers and theories
 
 KSMT provides support for various solvers:
 
-| SMT solver                                       |     Linux-x64      |    Windows-x64     |   macOS-aarch64    |     macOS-x64      |
-|--------------------------------------------------|:------------------:|:------------------:|:------------------:|:------------------:|
-| [Z3](https://github.com/Z3Prover/z3)             | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [Bitwuzla](https://github.com/bitwuzla/bitwuzla) | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |                    |
-| [Yices2](https://github.com/SRI-CSL/yices2)      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |                    |
-| [cvc5](https://github.com/cvc5/cvc5)             | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |                    |
+| SMT solver                                       | Linux-x64 | Windows-x64 | macOS-aarch64 | macOS-x64 |
+|--------------------------------------------------|:---------:|:-----------:|:-------------:|:---------:|
+| [Z3](https://github.com/Z3Prover/z3)             | &#x2714;  |  &#x2714;   |   &#x2714;    | &#x2714;  |
+| [Bitwuzla](https://github.com/bitwuzla/bitwuzla) | &#x2714;  |  &#x2714;   |   &#x2714;    |           |
+| [Yices2](https://github.com/SRI-CSL/yices2)      | &#x2714;  |  &#x2714;   |   &#x2714;    |           |
+| [cvc5](https://github.com/cvc5/cvc5)             | &#x2714;  |  &#x2714;   |   &#x2714;    |           |
 
 You can also use SMT solvers across multiple theories:
 
-| Theory                  |         Z3         |      Bitwuzla      |       Yices2       |        cvc5        |
-|-------------------------|:------------------:|:------------------:|:------------------:|:------------------:|
-| Bitvectors              | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| Arrays                  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| IEEE Floats             | :heavy_check_mark: | :heavy_check_mark: |                    | :heavy_check_mark: |
-| Uninterpreted Functions | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| Arithmetic              | :heavy_check_mark: |                    | :heavy_check_mark: | :heavy_check_mark: |
+| Theory                  | Z3         | Bitwuzla | Yices2       |   cvc5    |
+|-------------------------|:----------:|:--------:|:------------:|:---------:|
+| Bitvectors              |  &#x2714;  | &#x2714; |   &#x2714;   | &#x2714;  |
+| Arrays                  |  &#x2714;  | &#x2714; |   &#x2714;   | &#x2714;  |
+| IEEE Floats             |  &#x2714;  | &#x2714; |              | &#x2714;  |
+| Uninterpreted Functions |  &#x2714;  | &#x2714; |   &#x2714;   | &#x2714;  |
+| Arithmetic              |  &#x2714;  |          |   &#x2714;   | &#x2714;  |
 
+---
 ### Solver-agnostic formula representation
 
 Various scenarios are available for using SMT solvers: you can use a single solver to determine whether a formula is
@@ -76,6 +84,7 @@ We implemented it in KSMT, so you can
 Expression interning (hash consing) affords faster expression comparison: we do not need to compare the expression
 trees. Expressions are deduplicated, so we avoid redundant memory allocation.
 
+---
 ### Kotlin-based DSL for SMT formulas
 
 KSMT provides you with a unified DSL for SMT expressions:
@@ -89,6 +98,7 @@ val expr = (array.select(index - 1.expr) lt value) and
         (array.select(index + 1.expr) gt value)
 ```
 
+---
 ### Utilities to simplify and transform expressions
 
 KSMT provides a simplification engine applicable to all supported expressions for all supported theories:
@@ -102,6 +112,7 @@ KSMT simplification engine implements more than 200 rules.
 By default, it attempts to apply simplifications when you create the expressions, but you can turn this
 feature off, if necessary. You can also simplify an arbitrary expression manually.
 
+---
 ### Using multiple solvers (portfolio mode)
 
 SMT solvers may differ in performance across different formulas:
@@ -112,6 +123,7 @@ With KSMT portfolio solving, you can run multiple solvers in parallel on the sam
 
 For detailed instructions on running multiple solvers, see [Advanced usage](https://ksmt.io/advanced-usage).
 
+---
 ### Running solvers in separate processes
 
 Most of the SMT solvers are research projects — they are implemented via native libraries and are sometimes not 
@@ -122,6 +134,7 @@ production ready:
 KSMT runs each solver in a separate process, which adds to stability of your application and provides support for
 portfolio mode.
 
+---
 ### KSMT distribution
 
 Many solvers do not have prebuilt binaries, or binaries are for Linux only.
@@ -129,6 +142,3 @@ Many solvers do not have prebuilt binaries, or binaries are for Linux only.
 KSMT is distributed as JVM library with solver binaries provided. The library has been tested against the SMT-LIB 
 benchmarks. Documentation and examples are also available.
 
-
-
-[ksmt-github]: https://github.com/UnitTestBot/ksmt

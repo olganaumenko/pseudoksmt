@@ -25,14 +25,14 @@ implementation("io.ksmt:ksmt-core:0.5.3")
 implementation("io.ksmt:ksmt-z3:0.5.3")
 ```
 
-Find basic instructions in the [Getting started](docs/getting-started.md) guide and try it out with the 
+Find basic instructions in the [Getting started](docs/content/getting-started.md) guide and try it out with the 
 [Kotlin](examples/src/main/kotlin) or [Java](examples/src/main/java) examples.
 
-To go beyond the basic scenarios, proceed to the [Advanced usage](docs/advanced-usage.md) guide and try the [advanced 
+To go beyond the basic scenarios, proceed to the [Advanced usage](docs/content/advanced-usage.md) guide and try the [advanced 
 example](/examples/src/main/kotlin/AdvancedExamples.kt).
 
 To get guided experience in KSMT, step through the detailed scenario for creating 
-[custom expressions](docs/custom-expressions.md).
+[custom expressions](docs/content/custom-expressions.md).
 
 ## Find more on KSMT features
 
@@ -108,7 +108,7 @@ see the [International Satisfiability Modulo Theories Competition](https://smt-c
 With KSMT portfolio solving, you can run multiple solvers in parallel on the same formula — until you get the first
 (the fastest) result.
 
-For detailed instructions on running multiple solvers, see [Advanced usage](docs/advanced-usage.md).
+For detailed instructions on running multiple solvers, see [Advanced usage](docs/content/advanced-usage.md).
 
 ### Running solvers in separate processes
 
