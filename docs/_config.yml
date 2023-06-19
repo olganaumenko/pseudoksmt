@@ -3,7 +3,7 @@ title: KSMT
 description: Kotlin API for SMT solvers
 theme: just-the-docs
 url: ksmt.io
-#baseurl: /ksmt
+
 
 #defaults:
 #  - scope:
