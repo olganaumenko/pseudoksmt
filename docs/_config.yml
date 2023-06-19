@@ -2,8 +2,8 @@ logo: "assets/img/ksmt-logo-black6.png"
 title: KSMT
 description: Kotlin API for SMT solvers
 theme: just-the-docs
-url: pseudoksmt.io
-baseurl: /ksmt
+url: ksmt.io
+#baseurl: /ksmt
 
 #defaults:
 #  - scope:
